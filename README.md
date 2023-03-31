@@ -21,7 +21,8 @@ Because while it's one of the world's most advanced AIs, it's still dumb as a br
 def getJSONfromResponse(json_text):
 
     """
-    Returns a JSON object from the openai api response. You'll need to get the openAIResponse['choices'][0]["message"]['content'] if you're using the ChatCompletion endpoint 
+    Returns a JSON object from the openai api response. You'll need to get the openAIResponse
+    ['choices'][0]["message"]['content'] if you're using the ChatCompletion endpoint 
     or openAIResponse['choices'][0]["text"] if you're just using the Completion endpoint.
     """
 
