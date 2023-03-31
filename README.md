@@ -5,7 +5,7 @@
 3. `python3 app.py`
 
 ## ChatGPT Tips and Tricks
-
+### ChatGPT likes a chinwag
 Firstly, understand that GPT is conversational. That means even if you say `Please only respond with JSON`, it will probably still say something like:
 
 ```
@@ -49,7 +49,7 @@ def getJSONfromResponse(json_text):
         print(f"Unable to find any JSON: {e}.")
         return None
 ```
-
+### ChatGPT likes to be warmed up a little
 If you want to use priming, you have to send them to the ` openai.ChatCompletion.create`  endpoint (the `openai.Completion.create` doesn't support priming like the below, although you can prime with a standard prompt). Priming is an important part of working with LLMs and can save you a bunch of time writing prompts, here's an example:
 
 ```python
