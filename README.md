@@ -17,7 +17,7 @@ OK! I understand, here's your JSON:
 
 Because while it's one of the world's most advanced AIs, it's still dumb as a brick. Here is a Python method that might help with extracting the JSON from a GPT response:
 
-```
+```python
 def getJSONfromResponse(json_text):
 
     """
@@ -51,7 +51,7 @@ def getJSONfromResponse(json_text):
 
 If you want to use priming, you have to send them to the ` openai.ChatCompletion.create`  endpoint (the `openai.Completion.create` doesn't support priming like the below, although you can prime with a standard prompt). Priming is an important part of working with LLMs and can save you a bunch of time writing prompts, here's an example:
 
-```
+```python
 priming_sequence = [
 
         {"role": "system", "content": "You are an AI writer. You write business documents that are relevant to a certain standard I will provide later."},
