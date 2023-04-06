@@ -55,9 +55,15 @@ export const ChatWindow = () => {
   return (
     <Box>
       <Stack>
-        <Box sx={{ height: "10vh", backgroundColor: "#01918A" }}>header</Box>
+        <Box
+          sx={{ height: "5vh", backgroundColor: "#01918A", display: "flex" }}
+        ></Box>
         <Box>
-          <Stack component="ul" spacing="1em" sx={{ height: "80vh" }}>
+          <Stack
+            component="ul"
+            spacing="1em"
+            sx={{ height: "80vh", overflow: "scroll", padding: ".5em" }}
+          >
             {chatThread.map((message) => {
               const isTutor = message.user === "TUTOR";
 
@@ -78,9 +84,18 @@ export const ChatWindow = () => {
             })}
           </Stack>
         </Box>
-        <Box sx={{ border: "1px solid black", padding: "1em", height: "10vh" }}>
-          <form onSubmit={handleSubmit}>
-            <Input name="userInput" placeholder="Ask for Help" />
+        <Box sx={{ border: "1px solid black", padding: "1em", height: "5vh" }}>
+          <form
+            onSubmit={handleSubmit}
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              padding: ".5em",
+            }}
+          >
+            <div style={{ width: "70%" }}>
+              <Input name="userInput" placeholder="Ask for Help" fullWidth />
+            </div>
             <Button type="submit">submit</Button>
           </form>
         </Box>
