@@ -2,6 +2,7 @@ import React from 'react';
 import { Container, Grid, css } from '@mui/material';
 import './App.css';
 import { ChatWindow } from './components/ChatWindow';
+import { InfoBoard } from './components/InfoBoard';
 
 
 const style = {
@@ -16,7 +17,7 @@ function App() {
       <h1>MiniTee Chatbot</h1>
       <main style={style}>
 
-        <div>Left hand side</div>
+        <InfoBoard />
         <ChatWindow />
       </main>
     </div>
