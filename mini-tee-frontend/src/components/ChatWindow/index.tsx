@@ -1,6 +1,14 @@
-import { Input, Box, Container, Stack, Button, Card } from "@mui/material";
+import {
+  Input,
+  Box,
+  Container,
+  Stack,
+  Button,
+  Card,
+  Fab,
+  Typography,
+} from "@mui/material";
 import React, { SyntheticEvent } from "react";
-import useSWR from "swr";
 
 type Message = {
   user: UserType;
@@ -21,7 +29,12 @@ const fetchTutorResponse = async (input: string): Promise<string> => {
 };
 
 export const ChatWindow = () => {
-  const [chatThread, setChatThread] = React.useState<Message[]>([]);
+  const [chatThread, setChatThread] = React.useState<Message[]>([
+    {
+      body: "Have a go at responding to this challenge. Don’t worry, I’ll be here to help if you get stuck!",
+      user: "TUTOR",
+    },
+  ]);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
   const handleSubmit = (event: SyntheticEvent<HTMLFormElement>) => {
@@ -34,7 +47,7 @@ export const ChatWindow = () => {
     };
 
     const loadingMessage = {
-      body: "...",
+      body: "🤔",
       user: "TUTOR" as UserType,
     };
     const newThreadState = [...chatThread, userMessage, loadingMessage];
@@ -56,8 +69,40 @@ export const ChatWindow = () => {
     <Box>
       <Stack>
         <Box
-          sx={{ height: "5vh", backgroundColor: "#01918A", display: "flex" }}
-        ></Box>
+          sx={{
+            height: "5vh",
+            backgroundColor: "#01918A",
+            display: "flex",
+            alignContent: "center",
+            justifyContent: "space-between",
+            padding: ".5em",
+          }}
+        >
+          <div>
+            <Typography style={{ fontSize: "24px" }} color="white">
+              Vitu
+            </Typography>
+          </div>
+          <div style={{ display: "flex" }}>
+            <div
+              style={{
+                height: "35px",
+                width: "35px",
+                borderRadius: "35px",
+                backgroundColor: "rgba(0, 0, 0, 0.25)",
+                marginRight: "15px",
+              }}
+            ></div>
+            <div
+              style={{
+                height: "35px",
+                width: "35px",
+                borderRadius: "35px",
+                backgroundColor: "rgba(0, 0, 0, 0.25)",
+              }}
+            ></div>
+          </div>
+        </Box>
         <Box>
           <Stack
             component="ul"
@@ -91,6 +136,7 @@ export const ChatWindow = () => {
               display: "flex",
               justifyContent: "space-between",
               padding: ".5em",
+              backgroundColor: "white",
             }}
           >
             <div style={{ width: "70%" }}>
