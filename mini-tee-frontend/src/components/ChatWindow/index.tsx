@@ -79,6 +79,7 @@ export const ChatWindow = () => {
           }}
         >
           <div>
+            {/* <img src="%PUBLIC_URL%/vitu_badge.png" /> */}
             <Typography style={{ fontSize: "24px" }} color="white">
               Vitu
             </Typography>
@@ -129,7 +130,9 @@ export const ChatWindow = () => {
             })}
           </Stack>
         </Box>
-        <Box sx={{ border: "1px solid black", padding: "1em", height: "5vh" }}>
+        <Box
+          sx={{ border: "1px solid #EADFD5", padding: "1em", height: "5vh" }}
+        >
           <form
             onSubmit={handleSubmit}
             style={{
@@ -142,7 +145,9 @@ export const ChatWindow = () => {
             <div style={{ width: "70%" }}>
               <Input name="userInput" placeholder="Ask for Help" fullWidth />
             </div>
-            <Button type="submit">submit</Button>
+            <Button type="submit" style={{ color: "#01918A", width: "30%" }}>
+              submit
+            </Button>
           </form>
         </Box>
       </Stack>
