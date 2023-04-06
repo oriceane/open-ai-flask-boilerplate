@@ -7,7 +7,6 @@ export const InfoBoard = () => {
     return (
         <Box
             sx={{
-                width: "60%",
                 height: "100vh",
                 backgroundColor: '#FFE8DE',
             }}
