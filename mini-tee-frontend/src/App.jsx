@@ -8,17 +8,19 @@ import { InfoBoard } from './components/InfoBoard';
 const style = {
   display: "flex",
   flexDirection: "row",
-justifyContent: "spaceBetween"
-}
+  justifyContent: "spaceBetween",
+};
 
 function App() {
   return (
     <div className="App">
-      <h1>MiniTee Chatbot</h1>
       <main style={style}>
-
-        <InfoBoard />
-        <ChatWindow />
+        <div style={{ width: "50%", height: "100vh" }}>
+          <InfoBoard />
+        </div>
+        <div style={{ width: "50%", height: "100vh" }}>
+          <ChatWindow />
+        </div>
       </main>
     </div>
   );

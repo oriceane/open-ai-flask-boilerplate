@@ -33,10 +33,10 @@ def send_message_and_get_response():
 
     options = {}
     options["messages"] = all_messages
-    # response = aifunctions.chatCompletionQuery(options)
+    response = aifunctions.chatCompletionQuery(options)
 
-    # assistant_response = response.choices[0].message.content
-    assistant_response = "MOCK RESPONSE"
+    assistant_response = response.choices[0].message.content
+    # assistant_response = "MOCK RESPONSE"
     all_messages.append({"role": "assistant", "content": assistant_response})
 
     print("RESPONSE: " + assistant_response)

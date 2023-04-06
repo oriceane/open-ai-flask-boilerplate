@@ -1,79 +1,122 @@
-import { Input, Box, Container, Stack, Button, Card } from '@mui/material'
-import React, { SyntheticEvent } from 'react'
-import useSWR from "swr"
+import { Input, Box, Container, Stack, Button, Card } from "@mui/material";
+import React, { SyntheticEvent } from "react";
+import useSWR from "swr";
 
 type Message = {
-    user: UserType;
-    body: string;
-}
+  user: UserType;
+  body: string;
+};
 
-type UserType = 'USER'|'TUTOR'
+type UserType = "USER" | "TUTOR";
 
-const fetchTutorResponse = async (input: string):Promise<string> => {
-    console.log("request - ", input)
-    return await fetch("http://localhost:8888/messages", {
-        method: "POST",
-        body: JSON.stringify(input),
-        headers: {
-            "Content-Type": "application/json",
-          },
-    }).then((res) => res.text());
-}
+const fetchTutorResponse = async (input: string): Promise<string> => {
+  console.log("request - ", input);
+  return await fetch("http://localhost:8888/messages", {
+    method: "POST",
+    body: JSON.stringify(input),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }).then((res) => res.text());
+};
 
 export const ChatWindow = () => {
-    const [chatThread, setChatThread] = React.useState<Message[]>([])
-    const [isLoading, setIsLoading] =  React.useState<boolean>(false)
+  const [chatThread, setChatThread] = React.useState<Message[]>([]);
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
- 
-    
-    const handleSubmit = async (event: SyntheticEvent<HTMLFormElement>) => {
-        event.preventDefault()
-        
-        const userInput = event.currentTarget.userInput.value
-        const userMessage = {
-            body: userInput,
-            user: "USER" as UserType
-        }
-    
-        const awaitTutorMessage = {
-            body: "...",
-            user: "TUTOR" as UserType
-        }
-        setChatThread([...chatThread, userMessage, awaitTutorMessage])
+  const handleSubmit = (event: SyntheticEvent<HTMLFormElement>) => {
+    event.preventDefault();
 
-        const response = await fetchTutorResponse(userInput)
-        const tutorMessage = {
-            body: response,
-            user: "TUTOR" as UserType
-        }
+    const userInput = event.currentTarget.userInput.value;
+    const userMessage = {
+      body: userInput,
+      user: "USER" as UserType,
+    };
 
-        const thread = chatThread.slice(0, -1)
+    const loadingMessage = {
+      body: "...",
+      user: "TUTOR" as UserType,
+    };
+    const newThreadState = [...chatThread, userMessage, loadingMessage];
+    setChatThread(newThreadState);
 
-        setChatThread([...thread, tutorMessage])
-        console.log(response)
+    fetchTutorResponse(userInput).then((response) => {
+      const tutorMessage = {
+        body: response,
+        user: "TUTOR" as UserType,
+      };
+      console.log(chatThread);
 
-    }
+      setChatThread([...newThreadState.slice(0, -1), tutorMessage]);
+    });
+    event.currentTarget.userInput.value = "";
+  };
 
-    return (
+  return (
+    <Box>
+      <Stack>
+        <Box
+          sx={{ height: "5vh", backgroundColor: "#01918A", display: "flex" }}
+        ></Box>
         <Box>
-            <Stack>
-                <Box>header</Box>
-                <Box>
-                    <Stack component="ul">
-                        {chatThread.map((message) => {
-                            return <Card component="li" key={message.body}>{message.body}</Card>
-                        })}
-                    </Stack>
-                </Box>
-                <Box sx={{border:"1px solid black", padding: "1em"}}>
-                    <form onSubmit={handleSubmit}>
-                    <Input name="userInput" placeholder="Ask for Help"/>
-                    <Button type="submit">submit</Button>
-                    </form>
-                </Box>
-            </Stack>
+          <Stack
+            component="ul"
+            spacing="1em"
+            sx={{ height: "80vh", overflow: "scroll", padding: ".5em" }}
+          >
+            {chatThread.map((message) => {
+              const isTutor = message.user === "TUTOR";
+
+              return (
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: isTutor ? "left" : "right",
+                  }}
+                >
+                  <Message
+                    body={message.body}
+                    isTutor={isTutor}
+                    key={message.body}
+                  />
+                </div>
+              );
+            })}
+          </Stack>
         </Box>
-    ) 
-}
+        <Box sx={{ border: "1px solid black", padding: "1em", height: "5vh" }}>
+          <form
+            onSubmit={handleSubmit}
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              padding: ".5em",
+            }}
+          >
+            <div style={{ width: "70%" }}>
+              <Input name="userInput" placeholder="Ask for Help" fullWidth />
+            </div>
+            <Button type="submit">submit</Button>
+          </form>
+        </Box>
+      </Stack>
+    </Box>
+  );
+};
 
+const Message = ({ body, isTutor }) => {
+  const styles = {
+    backgroundColor: isTutor ? "#F7F2ED" : "#01918A",
+    textAlign: isTutor ? "left" : "right",
+    justifySelf: isTutor ? "flexStart" : "flexEnd",
+    color: isTutor ? "black" : "white",
+    padding: "1em",
+    width: "50%",
+  };
 
+  return (
+    <Card sx={styles} component="li">
+      {body}
+    </Card>
+  );
+};
