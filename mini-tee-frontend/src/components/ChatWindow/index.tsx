@@ -49,24 +49,36 @@ export const ChatWindow = () => {
 
       setChatThread([...newThreadState.slice(0, -1), tutorMessage]);
     });
+    event.currentTarget.userInput.value = "";
   };
 
   return (
     <Box>
       <Stack>
-        <Box>header</Box>
+        <Box sx={{ height: "10vh", backgroundColor: "#01918A" }}>header</Box>
         <Box>
-          <Stack component="ul">
+          <Stack component="ul" spacing="1em" sx={{ height: "80vh" }}>
             {chatThread.map((message) => {
+              const isTutor = message.user === "TUTOR";
+
               return (
-                <Card component="li" key={message.body}>
-                  {message.body}
-                </Card>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: isTutor ? "left" : "right",
+                  }}
+                >
+                  <Message
+                    body={message.body}
+                    isTutor={isTutor}
+                    key={message.body}
+                  />
+                </div>
               );
             })}
           </Stack>
         </Box>
-        <Box sx={{ border: "1px solid black", padding: "1em" }}>
+        <Box sx={{ border: "1px solid black", padding: "1em", height: "10vh" }}>
           <form onSubmit={handleSubmit}>
             <Input name="userInput" placeholder="Ask for Help" />
             <Button type="submit">submit</Button>
@@ -74,5 +86,22 @@ export const ChatWindow = () => {
         </Box>
       </Stack>
     </Box>
+  );
+};
+
+const Message = ({ body, isTutor }) => {
+  const styles = {
+    backgroundColor: isTutor ? "#F7F2ED" : "#01918A",
+    textAlign: isTutor ? "left" : "right",
+    justifySelf: isTutor ? "flexStart" : "flexEnd",
+    color: isTutor ? "black" : "white",
+    padding: "1em",
+    width: "50%",
+  };
+
+  return (
+    <Card sx={styles} component="li">
+      {body}
+    </Card>
   );
 };
