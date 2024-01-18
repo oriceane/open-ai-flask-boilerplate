@@ -1,9 +1,11 @@
+import os
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_cors import CORS, cross_origin
-import config, aifunctions, requests
+import aifunctions, googledrivefunctions, requests
 from pathlib import Path
 
-app = Flask(__name__, static_folder=config.UPLOAD_FOLDER)
+import googledrivefunctions
+
 app = Flask(__name__)
 
 cors = CORS(app)
@@ -14,7 +16,7 @@ assistant_prompt_1 = {"role": "assistant", "content": "Let's try to solve the fo
 user_prompt_1 = {"role": "user", "content": "Ok, but please, DON'T GIVE ME THE ANSWER, NEVER!"}
 assistant_prompt_2 = {"role": "assistant", "content": "I can't and won't give you the answer but I can help you. Try to answer the question."}
 assistant_prompt_3 = {"role": "assistant", "content": "What would be your best answer for the following problem \"Describe how the lungs are adapted for gas exchange\"?"}
-all_messages = [system_prompt,assistant_prompt_1,user_prompt_1,assistant_prompt_2,assistant_prompt_3]
+all_messages = [system_prompt, assistant_prompt_1, user_prompt_1, assistant_prompt_2, assistant_prompt_3]
 
 @app.errorhandler(404)
 def page_not_found(e):
@@ -79,6 +81,10 @@ def get_mnemonic():
         response.stream_to_file(speech_file_path)
 
 #       TODO upload file to URL
+#         response = googledrivefunctions.create_folder("Test folder 1")
+#         response2 = googledrivefunctions.create_folder("Test folder 2", response)
+#         files = googledrivefunctions.list_folder(response)
+#         print(files)
     elif (type == "song"):
         print("Generating song...")
     else:
