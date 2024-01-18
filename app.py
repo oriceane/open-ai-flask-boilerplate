@@ -57,20 +57,25 @@ def get_mnemonic():
     print("Type: " + type)
     print("Genre: " + genre)
 
+    user_prompt_title = {"role": "user", "content": "Give me a title for it"}
+
     if type == "poem":
         print("Generating poem...")
 
         options = {}
-        options["messages"] = [{"role": "user", "content": "Write a short poem in the genre " + genre + " about the " + topic + " and give it a title as well"}]
-        openai_response = aifunctions.chatCompletionQuery(options)
-        response = openai_response.choices[0].message.content
-        print(response)
+        user_prompt_poem = {"role": "user", "content": "Write a short poem in the genre " + genre + " about the " + topic}
 
-        title = response.split("\n", 1)[0].replace("Title: ", "")
-        transcript = response.split("\n", 1)[1]
+        options["messages"] = [user_prompt_poem]
+        openai_response = aifunctions.chatCompletionQuery(options)
+        transcript = openai_response.choices[0].message.content
 
         options = {}
-        options["input"] = transcript
+        options["messages"] = [user_prompt_poem, {"role": "assistant", "content": transcript}, user_prompt_title]
+        openai_response = aifunctions.chatCompletionQuery(options)
+        title = openai_response.choices[0].message.content
+
+        options = {}
+        options["input"] = title + "\n\n" + transcript
         options["voice"] = "fable"
 
         spoken_transcript_file_path = Path(__file__).parent / "spoken_transcript.mp3"
@@ -83,13 +88,17 @@ def get_mnemonic():
         print("Generating song...")
 
         options = {}
-        options["messages"] = [{"role": "user", "content": "Write lyrics to a very short song of the genre " + genre + " about the " + topic + " and give it a title as well"}]
-        openai_response = aifunctions.chatCompletionQuery(options)
-        response = openai_response.choices[0].message.content
-        print(response)
+        user_prompt_song = {"role": "user", "content": "Write lyrics to a very short song (2 verses are enough, no bridge) of the genre " + genre + " about the " + topic}
 
-        title = response.split("\n", 1)[0].replace("Title: ", "")
-        transcript = response.split("\n", 1)[1]
+        options["messages"] = [user_prompt_song]
+        openai_response = aifunctions.chatCompletionQuery(options)
+        transcript = openai_response.choices[0].message.content
+
+        options = {}
+        options["messages"] = [user_prompt_song, {"role": "assistant", "content": transcript}, user_prompt_title]
+        openai_response = aifunctions.chatCompletionQuery(options)
+        title = openai_response.choices[0].message.content
+
         url = uberduckfunctions.generate_rap(transcript.splitlines())
     else:
         print("Error: Unsupported mnemonic type")
