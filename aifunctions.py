@@ -1,27 +1,10 @@
-import openai
+from openai import OpenAI
 import config, os
 
-openai.api_key = config.OPENAI_API_KEY
-
-def completionQuery(options):
-    """
-    This method calls the openai CompletionCreate method. Use this if you're just sending standard prompt string.
-    Options should be:
-        model="text-davinci-003",
-        prompt="Dear AI, do stuff for me",
-        temperature=0.7,
-        max_tokens=512,
-        top_p=1,
-        frequency_penalty=0,
-        presence_penalty=0
-    """
-    try:
-        response = openai.Completion.create(**options)
-    except Exception as e:
-        print(f"Problem with: {e}")
-    
-    return response
-
+client = OpenAI(
+    api_key = config.OPENAI_API_KEY,
+)
+# openai.api_key = config.OPENAI_API_KEY
 
 def chatCompletionQuery(options):
         """
@@ -41,24 +24,25 @@ def chatCompletionQuery(options):
         """
         options["model"] = "gpt-3.5-turbo"
         try:
-            return openai.ChatCompletion.create(
+            return client.chat.completions.create(
                 **options
             )
         except Exception as e:
             print(f"Problem with: {e}.")
 
-
-def getChoices(openAIResponse, type="chatCompletionQuery"):
-    """
-    Returns a choice from the openai api response. This is generally the words you're looking for </force>
-    """
-    try:
-        if type == "chatCompletionQuery":
-            text = openAIResponse['choices'][0]["message"]['content']
-        else:
-            text = openAIResponse['choices'][0]["text"]
-
-        return text
-    except Exception as e:
-        print(f"Unable to find choices: {e}.")
-        return None
+def audioGenerationQuery(options):
+        """
+        This method calls the openAI audioGenerationQuery method. Use this if you want to generate audio from text.
+        Options should be:
+            input=input,
+            voice=voice
+        The input is the text to transform into speech
+        The voice is the voice type to use for the speech, e.g fable for story telling sounding (ideal for poems)
+        """
+        options["model"] = "tts-1"
+        try:
+            return client.audio.speech.create(
+                **options
+            )
+        except Exception as e:
+            print(f"Problem with: {e}.")

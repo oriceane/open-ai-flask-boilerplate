@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_cors import CORS, cross_origin
 import config, aifunctions, requests
+from pathlib import Path
 
 app = Flask(__name__, static_folder=config.UPLOAD_FOLDER)
 app = Flask(__name__)
@@ -42,6 +43,48 @@ def send_message_and_get_response():
     print("RESPONSE: " + assistant_response)
 
     return assistant_response
+
+@app.route('/mnemonic', methods=['POST'])
+@cross_origin()
+def get_mnemonic():
+    user_input = request.get_json()
+
+    type = user_input['type']
+    genre = user_input['genre']
+    subject = user_input['subject']
+    level = user_input['level']
+    topic = user_input['topic']
+
+    print("Type: " + type)
+    print("Genre: " + genre)
+    print("Subject: " + subject)
+    print("Level: " + level)
+    print("Topic: " + topic)
+
+    if type == "poem":
+        print("Generating poem...")
+
+        options = {}
+        options["messages"] = [{"role": "user", "content": "Write a short poem about the " + topic}]
+        openai_response = aifunctions.chatCompletionQuery(options)
+        first_response = openai_response.choices[0].message.content
+        print("Transcript: " + first_response)
+
+        options = {}
+        options["input"] = first_response
+        options["voice"] = "fable"
+
+        speech_file_path = Path(__file__).parent / "poem.mp3"
+        response = aifunctions.audioGenerationQuery(options)
+        response.stream_to_file(speech_file_path)
+
+#       TODO upload file to URL
+    elif (type == "song"):
+        print("Generating song...")
+    else:
+        print("Unsupported type")
+
+    return "Mnemonic generated!"
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port='8888', debug=True)
