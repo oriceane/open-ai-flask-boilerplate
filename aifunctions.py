@@ -1,7 +1,9 @@
 from openai import OpenAI
-import os
+import os, config
 
-client = OpenAI()
+client = OpenAI(
+    api_key = config.OPENAI_API_KEY
+)
 
 def chatCompletionQuery(options):
         """
