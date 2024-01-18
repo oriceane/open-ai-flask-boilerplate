@@ -88,7 +88,7 @@ def get_mnemonic():
         print("Generating song...")
 
         options = {}
-        user_prompt_song = {"role": "user", "content": "Write lyrics to a very short song (2 verses are enough, no bridge) of the genre " + genre + " about the " + topic}
+        user_prompt_song = {"role": "user", "content": "Write lyrics to a very short song of the genre " + genre + " about the " + topic + ". The song should have no bridge and less than 32 lines."}
 
         options["messages"] = [user_prompt_song]
         openai_response = aifunctions.chatCompletionQuery(options)
@@ -99,7 +99,7 @@ def get_mnemonic():
         openai_response = aifunctions.chatCompletionQuery(options)
         title = openai_response.choices[0].message.content
 
-        url = uberduckfunctions.generate_rap(transcript.splitlines())
+        url = uberduckfunctions.generate_rap(transcript)
     else:
         print("Error: Unsupported mnemonic type")
         return {}
