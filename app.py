@@ -51,23 +51,23 @@ def get_mnemonic():
 
     type = user_input['type']
     genre = user_input['genre']
-    subject = user_input['subject']
-    level = user_input['level']
     topic = user_input['topic']
 
+    print("Topic: " + topic)
     print("Type: " + type)
     print("Genre: " + genre)
-    print("Subject: " + subject)
-    print("Level: " + level)
-    print("Topic: " + topic)
 
     if type == "poem":
         print("Generating poem...")
 
         options = {}
-        options["messages"] = [{"role": "user", "content": "Write a short poem in the genre " + genre + " about the " + topic}]
+        options["messages"] = [{"role": "user", "content": "Write a short poem in the genre " + genre + " about the " + topic + " and give it a title as well"}]
         openai_response = aifunctions.chatCompletionQuery(options)
-        transcript = openai_response.choices[0].message.content
+        response = openai_response.choices[0].message.content
+        print(response)
+
+        title = response.split("\n", 1)[0].replace("Title: ", "")
+        transcript = response.split("\n", 1)[1]
 
         options = {}
         options["input"] = transcript
@@ -76,33 +76,29 @@ def get_mnemonic():
         spoken_transcript_file_path = Path(__file__).parent / "spoken_transcript.mp3"
         spoken_transcript = aifunctions.audioGenerationQuery(options)
         spoken_transcript.stream_to_file(spoken_transcript_file_path)
-        url = "https://..."
+
+        url = googledrivefunctions.upload_File("spoken_transcript.mp3")
 
     elif (type == "song"):
         print("Generating song...")
 
         options = {}
-        options["messages"] = [{"role": "user", "content": "Write lyrics to a very short song of the genre " + genre + " about the " + topic}]
+        options["messages"] = [{"role": "user", "content": "Write lyrics to a very short song of the genre " + genre + " about the " + topic + " and give it a title as well"}]
         openai_response = aifunctions.chatCompletionQuery(options)
-        transcript = openai_response.choices[0].message.content
+        response = openai_response.choices[0].message.content
+        print(response)
 
+        title = response.split("\n", 1)[0].replace("Title: ", "")
+        transcript = response.split("\n", 1)[1]
         url = uberduckfunctions.generate_rap(transcript.splitlines())
     else:
-        print("Unsupported type")
+        print("Error: Unsupported mnemonic type")
         return {}
 
-#       TODO upload file to URL
-#         response = googledrivefunctions.create_folder("Test folder 1")
-#         response2 = googledrivefunctions.create_folder("Test folder 2", response)
-#         files = googledrivefunctions.list_folder(response)
-#         print(files)
-
-    print("Mnemonic generated!")
-
     return {
-        "url": url,
-        "title": "Song title",
-        "transcript": transcript
+        "title": title,
+        "transcript": transcript,
+        "url": url
     }
 
 if __name__ == '__main__':
