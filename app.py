@@ -4,8 +4,6 @@ from flask_cors import CORS, cross_origin
 import aifunctions, googledrivefunctions, requests
 from pathlib import Path
 
-import googledrivefunctions
-
 app = Flask(__name__)
 
 cors = CORS(app)
