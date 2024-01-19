@@ -59,7 +59,7 @@ def get_mnemonic():
 
     user_prompt_title = {"role": "user", "content": "Give me a title for it"}
 
-    if type == "poem":
+    if type == "Poem":
         print("Generating poem...")
 
         options = {}
@@ -84,7 +84,7 @@ def get_mnemonic():
 
         url = googledrivefunctions.upload_File("spoken_transcript.wav")
 
-    elif (type == "song"):
+    elif (type == "Song"):
         print("Generating song...")
 
         options = {}
