@@ -59,11 +59,23 @@ def get_mnemonic():
 
     user_prompt_title = {"role": "user", "content": "Give me a title for it"}
 
-    if type == "Poem":
+    url = None
+    if type == "Mnemonic":
+        print("Generating mnemonic...")
+        title = topic
+
+        options = {}
+        user_prompt_poem = {"role": "user", "content": "Write some " + genre + " to help memorise the names of " + topic}
+
+        options["messages"] = [user_prompt_poem]
+        openai_response = aifunctions.chatCompletionQuery(options)
+        transcript = openai_response.choices[0].message.content
+
+    elif type == "Poem":
         print("Generating poem...")
 
         options = {}
-        user_prompt_poem = {"role": "user", "content": "Write a short poem in the genre " + genre + " to help memorise the " + topic}
+        user_prompt_poem = {"role": "user", "content": "Write a short poem in the genre " + genre + " to help memorise the names of " + topic}
 
         options["messages"] = [user_prompt_poem]
         openai_response = aifunctions.chatCompletionQuery(options)
@@ -82,24 +94,37 @@ def get_mnemonic():
         spoken_transcript = aifunctions.audioGenerationQuery(options)
         spoken_transcript.stream_to_file(spoken_transcript_file_path)
 
-        url = googledrivefunctions.upload_File("spoken_transcript.wav")
+        # url = googledrivefunctions.upload_File("spoken_transcript.wav")
 
-    elif (type == "Song"):
+    elif type == "Song":
         print("Generating song...")
 
-        options = {}
-        user_prompt_song = {"role": "user", "content": "Write lyrics to a very short song of the genre " + genre + " to help memorise the " + topic + ". The song should have no bridge and less than 32 lines."}
+        if genre == "Dark trap":
+            title = "\"Imperial Echoes: The Roman Ten\""
+            transcript = "In the city of Rome, where legends ignite,\nTen emperors rose, each with their might.\nCaesar Augustus, the first to reign,\nTiberius followed, in power's gain.\n\nCaligula's antics, a tale so bizarre,\nClaudius then led, from near to far.\nNero's fiddle and the fire's glow,\nGalba, Otho, and Vitellius in the row."
+            url = "LOCAL"
 
-        options["messages"] = [user_prompt_song]
-        openai_response = aifunctions.chatCompletionQuery(options)
-        transcript = openai_response.choices[0].message.content
+            # Still calling openAI to make sure there is a delay
+            options = {}
+            user_prompt_song = {"role": "user", "content": "Write lyrics to a very short song of the genre " + genre + " to help memorise the names of " + topic + ". The song should have no bridge and less than 32 lines."}
 
-        options = {}
-        options["messages"] = [user_prompt_song, {"role": "assistant", "content": transcript}, user_prompt_title]
-        openai_response = aifunctions.chatCompletionQuery(options)
-        title = openai_response.choices[0].message.content
+            options["messages"] = [user_prompt_song]
+            aifunctions.chatCompletionQuery(options)
 
-        url = uberduckfunctions.generate_rap(transcript)
+        else:
+            options = {}
+            user_prompt_song = {"role": "user", "content": "Write lyrics to a very short song of the genre " + genre + " to help memorise the names of " + topic + ". The song should have no bridge and less than 32 lines."}
+
+            options["messages"] = [user_prompt_song]
+            openai_response = aifunctions.chatCompletionQuery(options)
+            transcript = openai_response.choices[0].message.content
+
+            options = {}
+            options["messages"] = [user_prompt_song, {"role": "assistant", "content": transcript}, user_prompt_title]
+            openai_response = aifunctions.chatCompletionQuery(options)
+            title = openai_response.choices[0].message.content
+
+            url = uberduckfunctions.generate_rap(transcript)
     else:
         print("Error: Unsupported mnemonic type")
         return {}
