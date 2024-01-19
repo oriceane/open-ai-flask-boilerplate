@@ -101,7 +101,7 @@ def get_mnemonic():
 
         if genre == "Dark trap":
             title = "\"Imperial Echoes: The Roman Ten\""
-            transcript = "In the city of Rome, where legends ignite,\nTen emperors rose, each with their might.\nCaesar Augustus, the first to reign,\nTiberius followed, in power's gain.\n\nCaligula's antics, a tale so bizarre,\nClaudius then led, from near to far.\nNero's fiddle and the fire's glow,\nGalba, Otho, and Vitellius in the row."
+            transcript = "(Verse)\nIn the heart of Rome, a tale unfolds,\nTen emperors' stories, as history molds.\nAugustus, the first, with Caesar's might,\nTiberius followed, in power's light.\n\nCaligula's whims, a tumultuous ride,\nClaudius then ruled, his wit as guide.\nNero's fiddle played a haunting song,\nGalba, Otho, Vitellius, a sequence strong.\n\n(Chorus)\nImperial echoes through time cascade,\nThe Roman ten, in history laid.\nFrom Augustus to Vespasian's reign,\nTheir legacies in memory remain."
             url = "LOCAL"
 
             # Still calling openAI to make sure there is a delay
