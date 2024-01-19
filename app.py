@@ -78,11 +78,11 @@ def get_mnemonic():
         options["input"] = title + "\n\n" + transcript
         options["voice"] = "fable"
 
-        spoken_transcript_file_path = Path(__file__).parent / "spoken_transcript.mp3"
+        spoken_transcript_file_path = Path(__file__).parent / "spoken_transcript.wav"
         spoken_transcript = aifunctions.audioGenerationQuery(options)
         spoken_transcript.stream_to_file(spoken_transcript_file_path)
 
-        url = googledrivefunctions.upload_File("spoken_transcript.mp3")
+        url = googledrivefunctions.upload_File("spoken_transcript.wav")
 
     elif (type == "song"):
         print("Generating song...")
