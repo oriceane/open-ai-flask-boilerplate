@@ -63,7 +63,7 @@ def get_mnemonic():
         print("Generating poem...")
 
         options = {}
-        user_prompt_poem = {"role": "user", "content": "Write a short poem in the genre " + genre + " about the " + topic}
+        user_prompt_poem = {"role": "user", "content": "Write a short poem in the genre " + genre + " to help memorise the " + topic}
 
         options["messages"] = [user_prompt_poem]
         openai_response = aifunctions.chatCompletionQuery(options)
@@ -88,7 +88,7 @@ def get_mnemonic():
         print("Generating song...")
 
         options = {}
-        user_prompt_song = {"role": "user", "content": "Write lyrics to a very short song of the genre " + genre + " about the " + topic + ". The song should have no bridge and less than 32 lines."}
+        user_prompt_song = {"role": "user", "content": "Write lyrics to a very short song of the genre " + genre + " to help memorise the " + topic + ". The song should have no bridge and less than 32 lines."}
 
         options["messages"] = [user_prompt_song]
         openai_response = aifunctions.chatCompletionQuery(options)

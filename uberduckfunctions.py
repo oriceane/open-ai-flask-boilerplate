@@ -40,7 +40,7 @@ def generate_rap(lyrics):
             lyrics=[lyrics_as_list],
             lines=32,
 #             voicemodel_uuid='4ec5c264-0a49-47c8-a3eb-c0d3518a65a1',
-            voicemodel_uuid='5e510987-5353-4598-9d48-2bc0e23967e6',
+            voicemodel_uuid='3b7973b2-741f-40df-96dc-3cd70c868291',
             backing_track=backing_track_uuid
         ),
         auth=uberduck_auth,
